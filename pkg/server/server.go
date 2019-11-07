@@ -22,6 +22,8 @@ import (
 
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/sirupsen/logrus"
+
+	"github.com/gardener/gardener-metrics-exporter/pkg/docu"
 )
 
 var landingPage = []byte(`<html>
@@ -39,6 +41,11 @@ func Serve(ctx context.Context, bindAddress string, port int, logger *logrus.Log
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "Content-Type: text/html; charset=utf-8")
 		w.Write(landingPage)
+	})
+
+	http.HandleFunc("/docu", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "Content-Type: text/html; charset=utf-8")
+		w.Write([]byte(docu.GenerateMarkdownDocs()))
 	})
 
 	server := http.Server{

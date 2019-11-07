@@ -29,7 +29,8 @@ const (
 	metricShootsPrefix       = "garden_shoots"
 )
 
-var shootCustomizationMetrics = []*template.MetricTemplate{
+// ShootCustomizationMetrics ...
+var ShootCustomizationMetrics = []*template.MetricTemplate{
 	// General customization.
 	{
 		Name:   fmt.Sprintf("%s_privileged_containers_total", metricShootsCustomPrefix),
@@ -609,7 +610,7 @@ var shootCustomizationMetrics = []*template.MetricTemplate{
 }
 
 func registerShootCustomizationMetrics(ch chan<- *prometheus.Desc) {
-	for _, c := range shootCustomizationMetrics {
+	for _, c := range ShootCustomizationMetrics {
 		c.Register(ch)
 	}
 }
@@ -622,8 +623,8 @@ func collectShootCustomizationMetrics(shoots []*gardenv1alpha1.Shoot, ch chan<- 
 			wg.Done()
 		}
 	)
-	wg.Add(len(shootCustomizationMetrics))
-	for _, c := range shootCustomizationMetrics {
+	wg.Add(len(ShootCustomizationMetrics))
+	for _, c := range ShootCustomizationMetrics {
 		go run(c)
 	}
 	wg.Wait()
